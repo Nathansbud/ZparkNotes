@@ -1,13 +1,16 @@
 import os
 import asyncio
+import json
 from datetime import datetime, timedelta
-
 
 from upload import sheets
 
-kindle_path = "/Volumes/Kindle/documents/"
+with open(os.path.join(os.path.dirname(__file__), "config.json")) as pf: prefs = json.load(pf)
+
+
 delim = "==========\n"
-sheet_id = "1SYhTC_rsnhazrShXLLcgx30XQN3VsTgPNEtuaMtppyU"
+kindle_path = prefs.get("kindle_path")
+sheet_id = prefs.get('sheet_id')
 
 class Clipping:
     def __init__(self, title, author, content, added, page=None):
