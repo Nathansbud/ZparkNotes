@@ -6,15 +6,15 @@ config.json
 credentials/*
 !credentials/.gitkeep
 
-webapp/node_modules
-webapp/.pnp
-webapp/.pnp.js
+docs/node_modules
+docs/.pnp
+docs/.pnp.js
 
 # testing
-webapp/coverage
+docs/coverage
 
 # production
-webapp/build
+docs/build
 
 # misc
 .DS_Store
