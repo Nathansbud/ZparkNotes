@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import Papa from 'papaparse'
 
+import useKeyPress from './hooks/useKeyPress'
 import './App.css'
 
 type ZparkNote = {
@@ -8,16 +9,15 @@ type ZparkNote = {
     book: string,
     author: string,
     date: Date,
-    page: number | null
+    page: number
 }
 type ZparkView = 'card' | 'list' | 'log'
 
 type NoteProps = {note: ZparkNote}
-const NoteCard = ({note: {text, book, author, date, page, ...props}}: NoteProps) => {
-    
+const NoteCard = ({note: {text, book, author, date, page, ...props}}: NoteProps) => {    
     return (<div className='card'>
-        <h2>{text}</h2>
-        <h3>&mdash; <b>{book}</b> ({author}), {page}</h3>
+        <h2>{text[0].toUpperCase() + text.slice(1)}</h2>
+        <h3>&mdash; <b>{book}</b> ({author}){!isNaN(page) && `, ${page}`}</h3>
     </div>)    
 }
 
@@ -31,42 +31,62 @@ const LogoText = () => {
         </h1>
     )
 }
-function App() {
-    const sheetUrl = process.env.REACT_APP_ZPARKNOTES_SHEET_URL    
-    const [zparkNotes, setZparkNotes] = useState<ZparkNote[]>([])
-    const [loaded, setLoaded] = useState(false)
-    const [failed, setFailed] = useState(false)
-    const [zparkView, setView] = useState<ZparkView>('card')
 
-    useEffect(() => {
-        if(sheetUrl) {
+function App() {
+    const sheetUrl = process.env.REACT_APP_ZPARKNOTES_SHEET_URL
+    
+    const [zparkNotes, setZparkNotes] = useState<ZparkNote[]>([])
+    
+    const [currentIdx, setCurrentIdx] = useState(0)
+    const [seenIdxs, setSeenIdxs] = useState<number[]>([])
+
+    const [failed, setFailed] = useState(false)
+    const [zparkView] = useState<ZparkView>('card')
+    
+    const spacePressed = useKeyPress(' ')
+    
+    useEffect(() => { 
+        if (spacePressed && zparkNotes.length > 0) {
+            if (seenIdxs.length + 1 === zparkNotes.length) {
+                setSeenIdxs([])
+            } else {
+                const validKeys = [...Array(zparkNotes.length).keys()].filter(
+                    (idx) => !(idx === currentIdx) && !seenIdxs.includes(idx) 
+                )
+                console.log(validKeys)
+                setSeenIdxs(seenIdxs.concat(currentIdx))
+                setCurrentIdx(validKeys[Math.floor(Math.random() * validKeys.length)])
+            }
+        }
+
+        if(sheetUrl && zparkNotes.length === 0) {
             Papa.parse(sheetUrl, {
                 download: true,
-                step: (row) => {
-                    const [date, text, book, author, page] = row.data as string[]
-                    setZparkNotes((stored) => [...stored, {
-                        text: text,
-                        date: new Date(date),
-                        book: book,
-                        author: author,
-                        page: parseInt(page)
-                    } as ZparkNote])
-                },
-                complete: () => {
-                  console.log("Finished loading Zparknotes!")
-                },
-                error: (e) => {
-                    console.log("???")
-                    // console.log(e)
-                }
+                complete: (parseResult) => {
+                    const rows = parseResult.data.map(
+                        (row) => {
+                            const [date, text, book, author, page] = row as string[]
+                            return {
+                                text: text,
+                                date: new Date(date),
+                                book: book,
+                                author: author,
+                                page: parseInt(page)
+                            }
+                        }
+                    )
+                    console.log(parseResult)
+                    setCurrentIdx(Math.floor(Math.random() * zparkNotes.length))
+                    setZparkNotes(rows)
+                }            
             })
-            console.log(zparkNotes)
-        } else {
+        } else if(!sheetUrl) {
             console.error("No sheet URL specified as an environment variable!")
+            setFailed(true)
         }
-    }, [])
+    }, [sheetUrl, zparkNotes, spacePressed, currentIdx, seenIdxs])
     
-    if(zparkNotes.length == 0) {
+    if(zparkNotes.length === 0) {
         return (<>
             <LogoText/>
         </>)
@@ -74,19 +94,17 @@ function App() {
         switch(zparkView) {
             case 'card':
                 if(zparkNotes) {
-                    console.log(zparkNotes)
                     return (<>
                         <LogoText/>
-                        <NoteCard note={zparkNotes[0]}/>
+                        <NoteCard note={zparkNotes[currentIdx]} />
                     </>)
                 }
-                return <h1>yeet</h1>
+                return <h1>Loading quotes...</h1>
             case 'list':
-                const noteElems = zparkNotes.map((zn, i) => (<li key={i}>{zn.text}</li>))
                 return (<>
                     <LogoText/>
                     <ul>
-                        {noteElems}
+                        {zparkNotes.map((zn, i) => (<li key={i}>{zn.text}</li>))}
                     </ul>            
                 </>)
             default:
@@ -95,7 +113,7 @@ function App() {
     } else {
         return (<>
             <LogoText/>
-            <p>Failed to load lmaooo</p>
+            <p>Failed to load quotes!</p>
         </>)
     }
 }
