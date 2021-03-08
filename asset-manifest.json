@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/ZparkNotes/static/css/main.24db94ef.chunk.css",
-    "main.js": "/ZparkNotes/static/js/main.13453d19.chunk.js",
-    "main.js.map": "/ZparkNotes/static/js/main.13453d19.chunk.js.map",
-    "runtime-main.js": "/ZparkNotes/static/js/runtime-main.080f345b.js",
-    "runtime-main.js.map": "/ZparkNotes/static/js/runtime-main.080f345b.js.map",
-    "static/js/2.49d48f93.chunk.js": "/ZparkNotes/static/js/2.49d48f93.chunk.js",
-    "static/js/2.49d48f93.chunk.js.map": "/ZparkNotes/static/js/2.49d48f93.chunk.js.map",
-    "index.html": "/ZparkNotes/index.html",
-    "static/css/main.24db94ef.chunk.css.map": "/ZparkNotes/static/css/main.24db94ef.chunk.css.map",
-    "static/js/2.49d48f93.chunk.js.LICENSE.txt": "/ZparkNotes/static/js/2.49d48f93.chunk.js.LICENSE.txt"
+    "main.css": "/zpark.zamiton.com/static/css/main.24db94ef.chunk.css",
+    "main.js": "/zpark.zamiton.com/static/js/main.13453d19.chunk.js",
+    "main.js.map": "/zpark.zamiton.com/static/js/main.13453d19.chunk.js.map",
+    "runtime-main.js": "/zpark.zamiton.com/static/js/runtime-main.ace443f8.js",
+    "runtime-main.js.map": "/zpark.zamiton.com/static/js/runtime-main.ace443f8.js.map",
+    "static/js/2.49d48f93.chunk.js": "/zpark.zamiton.com/static/js/2.49d48f93.chunk.js",
+    "static/js/2.49d48f93.chunk.js.map": "/zpark.zamiton.com/static/js/2.49d48f93.chunk.js.map",
+    "index.html": "/zpark.zamiton.com/index.html",
+    "static/css/main.24db94ef.chunk.css.map": "/zpark.zamiton.com/static/css/main.24db94ef.chunk.css.map",
+    "static/js/2.49d48f93.chunk.js.LICENSE.txt": "/zpark.zamiton.com/static/js/2.49d48f93.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.080f345b.js",
+    "static/js/runtime-main.ace443f8.js",
     "static/js/2.49d48f93.chunk.js",
     "static/css/main.24db94ef.chunk.css",
     "static/js/main.13453d19.chunk.js"
