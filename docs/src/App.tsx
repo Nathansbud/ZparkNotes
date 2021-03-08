@@ -53,7 +53,6 @@ function App() {
                 const validKeys = [...Array(zparkNotes.length).keys()].filter(
                     (idx) => !(idx === currentIdx) && !seenIdxs.includes(idx) 
                 )
-                console.log(validKeys)
                 setSeenIdxs(seenIdxs.concat(currentIdx))
                 setCurrentIdx(validKeys[Math.floor(Math.random() * validKeys.length)])
             }
@@ -75,7 +74,6 @@ function App() {
                             }
                         }
                     )
-                    console.log(parseResult)
                     setCurrentIdx(Math.floor(Math.random() * zparkNotes.length))
                     setZparkNotes(rows)
                 }            
@@ -84,7 +82,7 @@ function App() {
             console.error("No sheet URL specified as an environment variable!")
             setFailed(true)
         }
-    }, [sheetUrl, zparkNotes, spacePressed, currentIdx, seenIdxs])
+    }, [sheetUrl, zparkNotes, spacePressed])
     
     if(zparkNotes.length === 0) {
         return (<>
