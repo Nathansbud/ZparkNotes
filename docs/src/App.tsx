@@ -74,8 +74,8 @@ function App() {
                             }
                         }
                     )
-                    setCurrentIdx(Math.floor(Math.random() * zparkNotes.length))
                     setZparkNotes(rows)
+                    setCurrentIdx(Math.floor(Math.random() * rows.length))
                 }            
             })
         } else if(!sheetUrl) {
