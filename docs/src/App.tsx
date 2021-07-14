@@ -53,6 +53,7 @@ function App() {
                 const validKeys = [...Array(zparkNotes.length).keys()].filter(
                     (idx) => !(idx === currentIdx) && !seenIdxs.includes(idx) 
                 )
+                
                 setSeenIdxs(seenIdxs.concat(currentIdx))
                 setCurrentIdx(validKeys[Math.floor(Math.random() * validKeys.length)])
             }
@@ -74,8 +75,9 @@ function App() {
                             }
                         }
                     )
-                    setZparkNotes(rows)
+                    
                     setCurrentIdx(Math.floor(Math.random() * rows.length))
+                    setZparkNotes(rows)
                 }            
             })
         } else if(!sheetUrl) {
