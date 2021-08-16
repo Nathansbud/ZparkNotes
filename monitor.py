@@ -29,12 +29,24 @@ def build_clipping(entry):
     page = None
     if 'Highlight on' in location or 'Bookmark on' in location:
         page, loc, added = location.split('|')
-        page = page[page.find('Page ') + len('Page '):]
+        page = page[page.lower().find('page ') + len('page '):]
     else:
         loc, added = location.split('|')
     
     added = added[added.find('Added on ') + len('Added on '):]
-    added_date = datetime.strptime(added, '%A, %B %d, %Y, %I:%M %p') #idrc about leap years
+    
+    try:
+        #New Kindle format
+        added_date = datetime.strptime(added, '%A, %B %d, %Y %I:%M:%S %p') #idrc about leap years
+    except ValueError:
+        try:
+            #Old Kindle format
+            added_date = datetime.strptime(added, '%A, %B %d, %Y, %I:%M %p') #idrc about leap years
+        except ValueError:
+            added_date = added
+
+    
+
     return Clipping(title, author, "\n".join(content), added_date, page) if content else None 
     
 def update_clippings():
